@@ -13,11 +13,9 @@ import static org.hamcrest.Matchers.notNullValue;
 
 class UserTest {
 
-
-
         @BeforeAll
          static void setUp() {
-            baseURI = "http://restapi.wcaquino.me";
+            baseURI = "/iot";
             port = 80;
         }
 
