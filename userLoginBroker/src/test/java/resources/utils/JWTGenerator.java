@@ -20,7 +20,7 @@ public class JWTGenerator {
 
         String token = Jwts.builder()
                 .setSubject(cpf)
-                .claim("role", InputRole)
+                .claim("ROLE", InputRole)
                 .setExpiration(new Date(tempoExpiracao))
                 .signWith(key())
                 .compact();
