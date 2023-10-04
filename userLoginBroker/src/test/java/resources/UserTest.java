@@ -157,7 +157,16 @@ class UserTest {
     @Order(8)
     void deveAtualizarUmUsuarioSemSucessoENaoEncontrado(){
 
+        User usuario = new User("João", "123.456.789-30", "davi@example.com", new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        String expectedDateOfBirth = sdf.format(usuario.getDateOfBirth());
+
         given()
+                .contentType(ContentType.JSON)
+                .body("{\"name\":\"" + usuario.getName() +
+                        "\",\"cpf\":\"" + usuario.getCpf() +
+                        "\",\"email\":\"" + usuario.getEmail() +
+                        "\",\"password\":\"12345\",\"date_of_birth\":\"" + expectedDateOfBirth + "\"}")
         .when()
                 .patch("/user/1000")
         .then()

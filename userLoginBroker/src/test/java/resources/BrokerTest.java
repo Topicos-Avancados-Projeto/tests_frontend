@@ -49,7 +49,7 @@ class BrokerTest {
                 .post("/broker_client")
         .then()
                 .statusCode(is(422))
-                .body("message",is("Syntax Error!"));
+                .body("msg",is("Validation Problem"));
     }
 
     @Test
@@ -124,7 +124,7 @@ class BrokerTest {
                 .patch("/broker_client/1")
         .then()
                 .statusCode(is(409))
-                .body("message",is("Broker Client Already exists"));
+                .body("msg",is("Broker Client Already exists"));
     }
 
     @Test
@@ -139,7 +139,7 @@ class BrokerTest {
                 .patch("/broker_client/100000000")
         .then()
                 .statusCode(is(404))
-                .body("message",is("Broker Client does not exists"));
+                .body("msg",is("Broker Client does not exists"));
     }
 
 
@@ -164,7 +164,7 @@ class BrokerTest {
             .delete("/broker_client/1")
         .then()
                 .statusCode(is(404))
-                .body("message",is("Broker Client does not exists"));
+                .body("msg",is("Broker Client does not exists"));
     }
 
     

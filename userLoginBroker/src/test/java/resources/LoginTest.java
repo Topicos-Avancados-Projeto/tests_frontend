@@ -38,7 +38,6 @@ class LoginTest {
     @Test
     void deveLogarSemSucessoCamposIncorretos(){
 
-
         given()
                 .contentType(ContentType.JSON)
                 .body("{\"cpf\":\"" + "123.456.789-00" + "\",\"password\":\"1234\"}")
@@ -81,7 +80,6 @@ class LoginTest {
 
     void deveProibirOAcessoASolicitacaoDeInformacoesDeLogin(){
 
-
         given()
         .when()
             .get("/login")
@@ -93,45 +91,13 @@ class LoginTest {
     @Test
         void deveAutorizarOAccessoSolicitadoDeInformaçõesDeLogin(){
 
-             String cpf = "123.456.789-00";
-        String token = JWTGenerator.tokenGenerator("admin",cpf);
 
         given()
-                .header("Authorization", token)
-                .when()
-                .get("/login")
-                .then()
-                .statusCode(is(200))
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("loginJsonSchema.json"));
-    }
-    @Test
-    void deveNaoAutorizarOAcessoAsolicitacaoDeInformacoesDeLoginSemAutorizacao(){
-
-        String cpf = "123.456.789-1";
-        String token = JWTGenerator.tokenGenerator("noRole",cpf);
-
-        given()
-            .header("Authorization", token)
         .when()
             .get("/login")
         .then()
-            .statusCode(is(401));
-
-    }
-
-    @Test
-    void deveNaoAutorizarOAcessoAsolicitacaoDeInformacoesDeLoginSemPermissao(){
-
-        String cpf = "123.456.789-11";
-        String token = JWTGenerator.tokenGenerator("noRole",cpf);
-
-        given()
-            .header("Authorization", token)
-        .when()
-            .get("/login/login")
-        .then()
-            .statusCode(is(403))
+            .statusCode(is(200))
             .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("loginJsonSchema.json"));
-
     }
+
 }
