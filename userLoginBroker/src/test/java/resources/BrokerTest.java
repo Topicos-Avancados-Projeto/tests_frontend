@@ -1,14 +1,10 @@
 package resources;
 
-import com.google.gson.JsonObject;
 import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import resources.utils.BrokerUtils;
-
-import java.awt.print.Pageable;
-import java.util.Date;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.is;
@@ -23,83 +19,6 @@ class BrokerTest {
     }
 
 
-    //Função Get
-    @Test
-
-    void deveObterOsClientesDoBrokerComSucesso(){
-
-        given()
-        .when()
-                .get("/broker-client")
-        .then()
-                .statusCode(is(200))
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("brokerJsonSchema.json"));
-    }
-
-
-    /*@Test
-
-    void deveObterOsClientesDoBrokerSemSucessoESemAutorização(){
-
-        given()
-        .when()
-            .get("/broker_client")
-        .then()
-            .statusCode(is(401))
-            .body("msg",is("Broker Client is not logged in!"));
-    }
-
-    @Test
-
-    void deveObterOsClientesDoBrokerSemSucessoESemPermissão(){
-
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
-
-        given()
-                .header("Authorization", token)
-        .when()
-            .get("/broker_client")
-        .then()
-            .statusCode(is(403))
-            .body("msg",is("Broker Client do not have permission!"));
-    }*/
-    
-    @Test
-    void deveObterClienteBrokerComSucesso() {
-
-        given()
-        .when()
-                .get("/broker-client/1")
-        .then()
-                .statusCode(is(200))
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("brokerJsonSchema.json"));
-    }
-    
-   /* @Test
-    void deveObterClienteBrokerSemSucessoESemAutorizacao() {
-
-        given()
-        .when()
-                .get("/broker_client/1")
-        .then()
-                .statusCode(is(401))
-                .body("msg",is("Broker Client is not logged in!"));
-    }*/
-    
-    /*@Test
-    void deveObterClienteBrokerSemSucessoESemPermissão() {
-
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
-
-        given()
-                .header("Authorization", token)
-        .when()
-                .get("/broker_client/1")
-        .then()
-                .statusCode(is(403))
-                .body("msg",is("Broker Client do not have permission!"));
-    }*/
-    
     //Função POST
 
     @Test
@@ -107,33 +26,32 @@ class BrokerTest {
 
         String broker = BrokerUtils.criarPostBroker().toString();
 
-        System.out.println(broker);
         given()
                 .contentType(ContentType.JSON)
                 .body(broker)
         .when()
-            .post("/broker-client")
+                .post("/broker_client")
         .then()
                 .statusCode(is(201))
                 .header("Location",is(notNullValue()))
                 .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("brokerJsonSchema.json"));
     }
-    
+
     @Test
     void deveNaoResgistrarUmNovoClienteBrokerComProblemaValidacao(){
 
         String broker = BrokerUtils.criarPostBrokerInvalido().toString();
-
+        System.out.println(broker);
         given()
                 .contentType(ContentType.JSON)
                 .body(broker)
         .when()
-            .post("/broker-client")
+                .post("/broker_client")
         .then()
                 .statusCode(is(422))
-                .body("msg",is("Syntax Error!"));
+                .body("message",is("Syntax Error!"));
     }
-    
+
     @Test
     void deveNaoResgistrarUmNovoClienteBrokerComConflito(){
 
@@ -143,48 +61,53 @@ class BrokerTest {
                 .contentType(ContentType.JSON)
                 .body(broker)
         .when()
-            .post("/broker-client")
+                .post("/broker_client")
         .then()
                 .statusCode(is(409))
-                .body("msg",is("Broker Client already exist!"));
+                .body("msg",is("Broker Client already exists!"));
     }
-    
-  //Função DELETE
-    
+
+
+    //Função Get
     @Test
-    void deveRemoverUmClienteBrokerComSucesso(){
+
+    void deveObterOsClientesDoBrokerComSucesso(){
 
         given()
         .when()
-            .delete("/broker-client/1")
+                .get("/broker_client")
         .then()
-                .statusCode(is(204));
+                .statusCode(is(200))
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("brokerJsonSchema.json"));
     }
+
     
     @Test
-    void deveRemoverUmClienteBrokerSemSucessoENotFound(){
+    void deveObterClienteBrokerComSucesso() {
 
         given()
         .when()
-            .delete("/broker-client/1")
+                .get("/broker_client/1")
         .then()
-                .statusCode(is(404))
-                .body("msg",is("Broker Client does not have permission!"));
+                .statusCode(is(200))
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("brokerJsonSchema.json"));
     }
 
-    
- // FUNÇÃO PATCH
+
+
+
+    // FUNÇÃO PATCH
 
     @Test
     void deveAtualizarClientBrokerComSucesso(){
 
-    	String broker = BrokerUtils.criarPostBroker().toString();
+        String broker = BrokerUtils.criarPostBroker().toString();
 
         given()
                 .contentType(ContentType.JSON)
                 .body(broker)
         .when()
-                .patch("/broker-client/1")
+                .patch("/broker_client/1")
         .then()
                 .statusCode(is(204));
     }
@@ -198,12 +121,12 @@ class BrokerTest {
                 .contentType(ContentType.JSON)
                 .body(broker)
         .when()
-            .patch("/broker-client/2")
+                .patch("/broker_client/1")
         .then()
-            .statusCode(is(409))
-            .body("msg",is("CPF already exists!"));
+                .statusCode(is(409))
+                .body("message",is("Broker Client Already exists"));
     }
-    
+
     @Test
     void deveAtualizarUmUsuarioSemSucessoENotFound(){
 
@@ -213,10 +136,38 @@ class BrokerTest {
                 .contentType(ContentType.JSON)
                 .body(broker)
         .when()
-            .patch("/broker-client/100000000")
+                .patch("/broker_client/100000000")
         .then()
-            .statusCode(is(404))
-            .body("msg",is("Broker Client does not have permission!"));
+                .statusCode(is(404))
+                .body("message",is("Broker Client does not exists"));
     }
+
+
+
+  //Função DELETE
+    
+    @Test
+    void deveRemoverUmClienteBrokerComSucesso(){
+
+        given()
+        .when()
+            .delete("/broker_client/1")
+        .then()
+                .statusCode(is(204));
+    }
+    
+    @Test
+    void deveRemoverUmClienteBrokerSemSucessoENotFound(){
+
+        given()
+        .when()
+            .delete("/broker_client/1")
+        .then()
+                .statusCode(is(404))
+                .body("message",is("Broker Client does not exists"));
+    }
+
+    
+
     
 }

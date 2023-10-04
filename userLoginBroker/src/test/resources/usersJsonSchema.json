@@ -1,0 +1,31 @@
+{
+    "type": "array",
+    "default": [],
+    "items": {
+        "type": "object",
+        "required": [
+            "_id",
+            "name",
+            "cpf",
+            "email",
+            "date_of_birth"
+        ],
+        "properties": {
+            "_id": {
+                "type": "string"
+            },
+            "name": {
+                "type": "string"
+            },
+            "cpf": {
+              "type": "string"
+            },
+            "email": {
+                "type": "string"
+            },
+            "date_of_birth": {
+                "type": "string"
+            }
+        }
+    }
+}

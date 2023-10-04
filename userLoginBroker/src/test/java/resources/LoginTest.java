@@ -81,10 +81,8 @@ class LoginTest {
 
     void deveProibirOAcessoASolicitacaoDeInformacoesDeLogin(){
 
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
 
         given()
-                .header("Authorization", token)
         .when()
             .get("/login")
         .then()
