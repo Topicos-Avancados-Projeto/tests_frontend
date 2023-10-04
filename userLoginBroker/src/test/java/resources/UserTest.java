@@ -1,9 +1,11 @@
 package resources;
 
 import io.restassured.http.ContentType;
+import io.restassured.mapper.ObjectMapperType;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import resources.utils.JWTGenerator;
 
 import java.util.Date;
 
@@ -15,8 +17,7 @@ class UserTest {
 
         @BeforeAll
          static void setUp() {
-            baseURI = "/iot";
-            port = 80;
+            baseURI = "http://localhost:3003";
         }
 
         //FUNÇÃO GET
@@ -24,12 +25,12 @@ class UserTest {
     @Test
     void deveObterUsuariosComSucesso() {
 
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
-
+        String cpf = "703-555-738-22";
+        String token = JWTGenerator.tokenGenerator("admin",cpf);
         given()
                 .header("Authorization", token)
         .when()
-                .get("/users")
+                .get("/user")
         .then()
                 .statusCode(is(200))
                 .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("userJsonSchema.json"));
@@ -38,9 +39,12 @@ class UserTest {
     @Test
     void deveObterUsuariosSemSucessoESemAutorizacao(){
 
+        String cpf = "777-777-777-77";
+        String token = JWTGenerator.tokenGenerator("admin",cpf);
         given()
+                .header("Authorization", token)
         .when()
-                .get("/users")
+                .get("/user")
         .then()
                 .statusCode(is(401))
                 .body("msg",is("User not logged in!"));
@@ -49,12 +53,14 @@ class UserTest {
     @Test
     void deveObterUsuariosSemSucessoESemPermissão() {
 
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
+        String cpf = "703-555-738-22";
+
+        String token = JWTGenerator.tokenGenerator("owner",cpf);
 
         given()
                 .header("Authorization", token)
         .when()
-                .get("/users")
+                .get("/user")
         .then()
                 .statusCode(is(403))
                 .body("msg",is("Access forbidden for this user."));
@@ -63,7 +69,8 @@ class UserTest {
     @Test
     void deveDetalharUmUsuarioComSucesso(){
 
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
+        String cpf = "703-555-738-22";
+        String token = JWTGenerator.tokenGenerator("admin",cpf);
 
         given()
                 .header("Authorization", token)
@@ -77,7 +84,10 @@ class UserTest {
     @Test
     void deveDetalharUmUsuarioSemSucessoESemAutorizacao(){
 
+        String cpf = "777-777-777";
+        String token = JWTGenerator.tokenGenerator("noRole",cpf);
         given()
+                .header("Authorization", token)
         .when()
             .get("/user/1")
         .then()
@@ -88,7 +98,8 @@ class UserTest {
     @Test
     void deveDetalharUmUsuarioSemSucessoESemPermissão() {
 
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
+        String cpf = "703-555-738-22";
+        String token = JWTGenerator.tokenGenerator("NoRole",cpf);
 
         given()
                 .header("Authorization", token)
@@ -102,7 +113,8 @@ class UserTest {
     @Test
     void deveDetalharUmUsuarioSemSucessoENaoEncontrado(){
 
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
+        String cpf = "703-555-738-22";
+        String token = JWTGenerator.tokenGenerator("admin",cpf);
 
         given()
                 .header("Authorization", token)
@@ -113,14 +125,13 @@ class UserTest {
                 .body("msg",is("User not found."));
     }
 
-
-
         // FUNÇÃO DELETE
 
     @Test
     void deveRemoverUmUsuarioComSucesso(){
 
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
+        String cpf = "703-555-738-22";
+        String token = JWTGenerator.tokenGenerator("admin",cpf);
 
         given()
                 .header("Authorization", token)
@@ -133,7 +144,11 @@ class UserTest {
     @Test
     void deveRemoverUmUsuarioSemSucessoESemAutorizacao(){
 
+        String cpf = "777-777-777";
+        String token = JWTGenerator.tokenGenerator("noRole",cpf);
+
         given()
+                .header("Authorization", token)
         .when()
             .delete("/user/1")
         .then()
@@ -144,7 +159,9 @@ class UserTest {
     @Test
     void deveRemoverUmUsuarioSemSucessoESemPermissão(){
 
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
+        String cpf = "703-555-738-22";
+
+        String token = JWTGenerator.tokenGenerator("owner",cpf);
 
         given()
                 .header("Authorization", token)
@@ -158,12 +175,13 @@ class UserTest {
     @Test
     void deveRemoverUmUsuarioSemSucessoENaoEncontrado(){
 
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
+        String cpf = "703-555-738-22";
+        String token = JWTGenerator.tokenGenerator("admin",cpf);
 
         given()
                 .header("Authorization", token)
         .when()
-                .delete("/user/1000")
+                .delete("/user/10000")
         .then()
             .statusCode(is(404))
             .body("msg",is("User not found."));
@@ -177,7 +195,8 @@ class UserTest {
 
         User usuario = new User("João da Silva", "123.456.789-00", "joao@example.com", new Date());
 
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
+        String cpf = "703-555-738-22";
+        String token = JWTGenerator.tokenGenerator("admin",cpf);
 
         given()
                 .header("Authorization", token)
@@ -194,7 +213,10 @@ class UserTest {
     @Test
     void deveAtualizarUmUsuarioSemSucessoESemAutorizacao(){
 
+        String cpf = "703-555-738-11";
+        String token = JWTGenerator.tokenGenerator("noRole",cpf);
         given()
+                .header("Authorization",token)
         .when()
             .patch("/user/1")
         .then()
@@ -205,7 +227,8 @@ class UserTest {
     @Test
     void deveAtualizarUmUsuarioSemSucessoESemPermissão(){
 
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
+        String cpf = "703-555-738-22";
+        String token = JWTGenerator.tokenGenerator("owner",cpf);
 
         given()
                 .header("Authorization", token)
@@ -219,7 +242,8 @@ class UserTest {
     @Test
      void deveAtualizarUmUsuarioSemSucessoENaoEncontrado(){
 
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
+        String cpf = "703-555-738-22";
+        String token = JWTGenerator.tokenGenerator("admin",cpf);
 
         given()
                 .header("Authorization", token)
@@ -235,12 +259,16 @@ class UserTest {
 
         User usuario = new User();
 
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
+        String cpf = "703-555-738-22";
+        String token = JWTGenerator.tokenGenerator("admin",cpf);
 
         given()
             .header("Authorization", token)
-            .contentType(ContentType.JSON)
-            .body(usuario)
+                .contentType(ContentType.JSON)
+                .body("{\"name\":\"" + usuario.getName() +
+                        "\",\"cpf\":\"" + usuario.getCpf() +
+                        "\",\"email\":\"" + usuario.getEmail()
+                        + "\",\"password\":\"12345\",\"date_of_birth\":\"" + usuario.getDateOfBirth() + "\"}")
             .pathParam("id", 1)
         .when()
             .patch("/user/{id}")
@@ -251,52 +279,26 @@ class UserTest {
     // FUNÇÃO POST
 
     @Test
-    void deveRegistrarUmUsuarioComSucesso(){
+    void deveRegistrarUmUsuarioComSucesso() {
 
         User usuario = new User("João da Silva", "123.456.789-00", "joao@example.com", new Date());
 
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
-
         given()
-                .header("Authorization", token)
-                .contentType(ContentType.JSON)
-                .body(usuario)
+            .contentType(ContentType.JSON)
+            .body("{\"name\":\"" + usuario.getName() +
+                    "\",\"cpf\":\"" + usuario.getCpf() +
+                    "\",\"email\":\"" + usuario.getEmail()
+                    + "\",\"password\":\"12345\",\"date_of_birth\":\"" + usuario.getDateOfBirth() + "\"}")
         .when()
             .post("/user")
         .then()
-                .statusCode(is(201))
-                .body("id", is(notNullValue()))
-                .body("name", is("João da Silva"))
-                .body("cpf",is("123.456.789-00"))
-                .body("email",is("joao@example.com"))
-                .body("date of birth",is(usuario.getDateOfBirth()))
-                .header("Authorization",token);
-    }
-
-    @Test
-    void deveRegistrarUmUsuarioSemSucessoESemAutorizacao(){
-
-        given()
-        .when()
-                .post("/user")
-        .then()
-            .statusCode(is(401))
-            .body("msg",is("User not logged in!"));
-
-    }
-
-    @Test
-    void deveRegistrarUmUsuarioSemSucessoESemPermissão(){
-
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
-
-        given()
-                .header("Authorization", token)
-        .when()
-            .post("/user")
-        .then()
-            .statusCode(is(403))
-            .body("msg",is("Access forbidden for this user"));
+            .statusCode(is(201))
+            .body("id", is(notNullValue()))
+            .body("name", is(usuario.getName()))
+            .body("cpf", is(usuario.getCpf()))
+            .body("email", is(usuario.getEmail()))
+            .body("date_of_birth", is(usuario.getDateOfBirth()))
+            .header("Authorization", is(notNullValue()));
     }
 
     @Test
@@ -304,10 +306,7 @@ class UserTest {
 
         User usuario = new User("João da Silva", "123.456.789-00", "joao@example.com", new Date());
 
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
-
         given()
-                .header("Authorization", token)
                 .contentType(ContentType.JSON)
                 .body(usuario)
         .when()
@@ -316,9 +315,11 @@ class UserTest {
                 .statusCode(201);
 
         given()
-            .header("Authorization", token)
             .contentType(ContentType.JSON)
-            .body(usuario)
+            .body("{\"name\":\"" + usuario.getName() +
+                        "\",\"cpf\":\"" + usuario.getCpf() +
+                        "\",\"email\":\"" + usuario.getEmail()
+                        + "\",\"password\":\"12345\",\"date_of_birth\":\"" + usuario.getDateOfBirth() + "\"}")
         .when()
             .post("/user")
         .then()
@@ -332,16 +333,16 @@ class UserTest {
 
         User usuario = new User();
 
-        String token = "laaslkjqweoiru1312390iowjdflkj329u0089";
-
         given()
-                .header("Authorization", token)
-                .contentType(ContentType.JSON)
-                .body(usuario)
-                .when()
-                .post("/user")
-                .then()
-                .statusCode(is(422))
-                .body("msg", is("Validation problem"));
+            .contentType(ContentType.JSON)
+            .body("{\"name\":\"" + usuario.getName() +
+                "\",\"cpf\":\"" + usuario.getCpf() +
+                "\",\"email\":\"" + usuario.getEmail()
+                + "\",\"password\":\"12345\",\"date_of_birth\":\"" + usuario.getDateOfBirth() + "\"}")
+        .when()
+            .post("/user")
+        .then()
+            .statusCode(is(422))
+            .body("msg", is("Validation problem"));
     }
 }
