@@ -16,11 +16,7 @@ public class BrokerUtils {
         broker.addProperty("username", "john_doe");
         broker.addProperty("password", "mySecretPassword");
         broker.addProperty("lastwilltopic", "lastwill_topic");
-        JsonObject lastwillqos = new JsonObject();
-        lastwillqos.addProperty("type", 1);
-        lastwillqos.addProperty("enum", 0);
-        lastwillqos.addProperty("names","AT_MOST_ONCE");
-        broker.add("lastwillqos", lastwillqos);
+        broker.addProperty("lastwillqos", 0);
         broker.addProperty("lastwillmessage", "Last Will Message");
         broker.addProperty("lastwillretain", true);
         broker.addProperty("keepalive", 300);

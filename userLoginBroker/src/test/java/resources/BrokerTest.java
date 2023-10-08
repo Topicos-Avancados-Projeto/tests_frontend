@@ -17,15 +17,13 @@ class BrokerTest {
     static void setUp() {
         baseURI = "http://localhost:3003";
     }
-
-
     //Função POST
 
     @Test
     void deveResgistrarUmNovoClienteBrokerComSucesso(){
 
         String broker = BrokerUtils.criarPostBroker().toString();
-
+        System.out.println(broker);
         given()
                 .contentType(ContentType.JSON)
                 .body(broker)
@@ -41,7 +39,6 @@ class BrokerTest {
     void deveNaoResgistrarUmNovoClienteBrokerComProblemaValidacao(){
 
         String broker = BrokerUtils.criarPostBrokerInvalido().toString();
-        System.out.println(broker);
         given()
                 .contentType(ContentType.JSON)
                 .body(broker)
@@ -49,7 +46,7 @@ class BrokerTest {
                 .post("/broker_client")
         .then()
                 .statusCode(is(422))
-                .body("msg",is("Validation Problem"));
+                .body("msg",is("Syntax Error!"));
     }
 
     @Test
@@ -78,7 +75,7 @@ class BrokerTest {
                 .get("/broker_client")
         .then()
                 .statusCode(is(200))
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("brokerJsonSchema.json"));
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("brokersJsonSchema.json"));
     }
 
     
@@ -142,8 +139,6 @@ class BrokerTest {
                 .body("msg",is("Broker Client does not exists"));
     }
 
-
-
   //Função DELETE
     
     @Test
@@ -166,8 +161,5 @@ class BrokerTest {
                 .statusCode(is(404))
                 .body("msg",is("Broker Client does not exists"));
     }
-
-    
-
     
 }

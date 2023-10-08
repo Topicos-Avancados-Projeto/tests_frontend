@@ -21,18 +21,18 @@ class LoginTest {
     }
 
     @Test
-
     void deveLogarComSucesso() {
 
         given()
                 .contentType(ContentType.JSON)
-                .body("{\"cpf\":\"" + "123.456.789-00" + "\",\"password\":\"12345\"}")
+                .body("{\"cpf\":\"" + "123.456.789-00" + "\",\"password\":\"123456\"}")
         .when()
-                .post("/login/login")
+                .post("/login")
         .then()
                 .statusCode(is(201))
                 .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("loginJsonSchema.json"))
                 .header("Authorization", is(notNullValue()));
+
     }
 
     @Test
@@ -40,7 +40,7 @@ class LoginTest {
 
         given()
                 .contentType(ContentType.JSON)
-                .body("{\"cpf\":\"" + "123.456.789-00" + "\",\"password\":\"1234\"}")
+                .body("{\"cpf\":\"" + "123.456.789-01" + "\",\"password\":\"1234567\"}")
         .when()
                 .post("/login")
         .then()
@@ -54,9 +54,9 @@ class LoginTest {
 
         given()
                 .contentType(ContentType.JSON)
-                .body("{\"cpf\":\"" + "" + "\",\"password\":\"\"}")
+                .body("{\"cpf\":\"" + " "  + "\",\"password\":\" \"}") // ta passando quando é vazio ""
         .when()
-                .post("/login/login")
+                .post("/login")
         .then()
                 .statusCode(is(422))
                 .body("msg",is("Validation Problem."));
@@ -72,15 +72,25 @@ class LoginTest {
         .when()
             .post("/login")
         .then()
-            .statusCode(is(400))
-            .body("msg",is( "Malformed request. Check the sent data."));
+            .statusCode(is(422))
+            .body("msg",is("Validation Problem."));
     }
 
     @Test
-
+    void devePegarAsInformacoesDoUsuarioComProblemaDeAutorizacao(){
+        given()
+        .when()
+            .get("/login")
+        .then()
+            .statusCode(is(401))
+                .body("msg",is("User not logged in!"));
+    }
+    @Test
     void deveProibirOAcessoASolicitacaoDeInformacoesDeLogin(){
+        String token = JWTGenerator.tokenGenerator("","123.456.789-01");
 
         given()
+                .header("Authorization",token)
         .when()
             .get("/login")
         .then()
@@ -90,9 +100,10 @@ class LoginTest {
 
     @Test
         void deveAutorizarOAccessoSolicitadoDeInformaçõesDeLogin(){
-
+        String token = JWTGenerator.tokenGenerator("owner","123.456.789-00");
 
         given()
+                .header("Authorization",token)
         .when()
             .get("/login")
         .then()

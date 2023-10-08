@@ -1,5 +1,5 @@
 {
-    "type": "object",
+    "type": "array",
     "default": [],
     "items": {
         "type": "object",
@@ -55,7 +55,7 @@
                 "type": "string"
             },
             "lastwillqos": {
-                "type": "number"
+                "type" : "number"
             },
             "lastwillmessage": {
                 "type": "string"
