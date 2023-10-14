@@ -2,9 +2,7 @@ package resources;
 
 import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import resources.utils.JWTGenerator;
 
 import java.text.SimpleDateFormat;
@@ -13,7 +11,7 @@ import java.util.Locale;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserTest {
 
         @BeforeAll

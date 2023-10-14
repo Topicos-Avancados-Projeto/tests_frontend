@@ -55,7 +55,7 @@
                 "type": "string"
             },
             "lastwillqos": {
-                "type": "number"
+                "type": "object"
             },
             "lastwillmessage": {
                 "type": "string"
