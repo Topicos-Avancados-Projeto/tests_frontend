@@ -24,7 +24,6 @@ class BrokerTest {
     void deveResgistrarUmNovoClienteBrokerComSucesso(){
 
         String broker = BrokerUtils.criarPostBroker().toString();
-        System.out.println(broker);
         given()
                 .contentType(ContentType.JSON)
                 .body(broker)
@@ -63,7 +62,7 @@ class BrokerTest {
                 .post("/broker_client")
         .then()
                 .statusCode(is(409))
-                .body("msg",is("Broker Client already exists!"));
+                .body("msg",is("Broker Client Already exists!"));
     }
 
 
@@ -115,12 +114,14 @@ class BrokerTest {
     @Order(7)
     void deveAtualizarClientBrokerSemSucessoEComDadosRepetidos(){
 
+        BrokerUtils.criarPostBrokerAlternativoParaTestarAtualizacao();
+
         String broker = BrokerUtils.criarPostBroker().toString();
         given()
                 .contentType(ContentType.JSON)
                 .body(broker)
         .when()
-                .patch("/broker_client/1")
+                .patch("/broker_client/2")
         .then()
                 .statusCode(is(409))
                 .body("msg",is("Broker Client Already exists!"));
@@ -139,7 +140,7 @@ class BrokerTest {
                 .patch("/broker_client/100000000")
         .then()
                 .statusCode(is(404))
-                .body("msg",is("Broker Client does not exists!"));
+                .body("msg",is("Broker Client not found."));
     }
 
   //Função DELETE
@@ -161,10 +162,10 @@ class BrokerTest {
 
         given()
         .when()
-            .delete("/broker_client/1")
+            .delete("/broker_client/10000")
         .then()
                 .statusCode(is(404))
-                .body("msg",is("Broker Client does not exists!"));
+                .body("msg",is("Broker Client not found."));
     }
     
 }

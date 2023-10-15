@@ -5,7 +5,8 @@
         "name",
         "cpf",
         "email",
-        "date_of_birth"
+        "date_of_birth",
+        "role"
     ],
     "properties": {
         "_id": {
@@ -21,6 +22,9 @@
             "type": "string"
         },
         "date_of_birth": {
+            "type": "string"
+        },
+        "role": {
             "type": "string"
         }
     }

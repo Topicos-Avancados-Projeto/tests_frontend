@@ -9,7 +9,7 @@ public class User {
     private String cpf;
     private String email;
     private Date dateOfBirth;
-
+    private String role;
     public User( String name, String cpf, String email, Date dateOfBirth) {
         this.name = name;
         this.cpf = cpf;
@@ -57,4 +57,5 @@ public class User {
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
+
 }

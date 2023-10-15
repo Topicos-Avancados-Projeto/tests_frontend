@@ -4,6 +4,7 @@ import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import org.junit.jupiter.api.*;
 import resources.utils.JWTGenerator;
+import resources.utils.UserUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -54,6 +55,7 @@ class UserTest {
     void deveRegistrarUmUsuarioSemSucessoComConflitoDeCPF(){
 
         User usuario = new User("João da Silva", "123.456.789-00", "joao@example.com", new Date());
+
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
         String expectedDateOfBirth = sdf.format(usuario.getDateOfBirth());
 
@@ -94,7 +96,8 @@ class UserTest {
     @Order(5)
     void deveObterUsuariosComSucesso() {
 
-        String token = JWTGenerator.tokenGenerator("admin","123.456.789-00");
+        String token = UserUtils.tokenGenerator();
+
         given()
                 .header("Authorization",token)
         .when()
@@ -136,12 +139,12 @@ class UserTest {
     @Order(8)
     void deveDetalharUmUsuarioComSucesso(){
 
-        String token = JWTGenerator.tokenGenerator("admin","123.456.789-00");
+        String token = UserUtils.tokenGenerator();
 
         given()
                 .header("Authorization",token)
         .when()
-                .get("/user/1")
+                .get("/user/2")
         .then()
                 .statusCode(is(200))
                 .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("userJsonSchema.json"));
@@ -152,7 +155,7 @@ class UserTest {
     @Order(9)
     void deveDetalharUmUsuarioSemSucessoENaoEncontrado(){
 
-        String token = JWTGenerator.tokenGenerator("admin","123.456.789-00");
+        String token = UserUtils.tokenGenerator();
 
         given()
                 .header("Authorization",token)
@@ -169,7 +172,7 @@ class UserTest {
 
         given()
         .when()
-                .get("/user/1")
+                .get("/user/2")
         .then()
                 .statusCode(is(401))
                 .body("msg",is("User not logged in!"));
@@ -184,7 +187,7 @@ class UserTest {
         given()
                 .header("Authorization",token)
         .when()
-            .get("/user/1")
+            .get("/user/2")
         .then()
             .statusCode(is(403))
             .body("msg",is("Access forbidden for this user."));
@@ -197,9 +200,9 @@ class UserTest {
     @Order(12)
     void deveAtualizarUmUsuarioComSucesso(){
 
-        String token = JWTGenerator.tokenGenerator("owner","123.456.789-00");
+        String token = UserUtils.tokenGenerator();
 
-        User usuario = new User("João da Silva", "123.456.789-00", "joaoo@example.com", new Date());
+        User usuario = new User("João da Silva", "123.456.789-00", "joaoe@example.com", new Date());
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
         String expectedDateOfBirth = sdf.format(usuario.getDateOfBirth());
 
@@ -212,7 +215,7 @@ class UserTest {
                         "\",\"email\":\"" + usuario.getEmail() +
                         "\",\"password\":\"1234567\",\"date_of_birth\":\"" + expectedDateOfBirth + "\"}")
         .when()
-                .patch("/user/1")
+                .patch("/user/2")
         .then()
                 .statusCode(is(200));
     }
@@ -221,7 +224,7 @@ class UserTest {
     @Order(13)
     void deveAtualizarUmUsuarioSemSucessoENaoEncontrado(){
 
-        String token = JWTGenerator.tokenGenerator("owner","123.456.789-00");
+        String token = UserUtils.tokenGenerator();
 
         User usuario = new User("João", "123.456.789-30", "davi@example.com", new Date());
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
@@ -245,7 +248,7 @@ class UserTest {
     @Order(14)
     void deveAtualizarUmUsuarioSemSucessoEComProblemaDeValidacao(){
 
-        String token = JWTGenerator.tokenGenerator("owner","123.456.789-00");
+        String token = UserUtils.tokenGenerator();
 
         given()
                 .header("Authorization",token)
@@ -313,24 +316,13 @@ class UserTest {
 
         // FUNÇÃO DELETE
 
+
+
     @Test
     @Order(17)
-    void deveRemoverUmUsuarioComSucesso(){
-
-        String token = JWTGenerator.tokenGenerator("owner","123.456.789-00");
-
-        given()
-                .header("Authorization",token)
-        .when()
-            .delete("/user/1")
-        .then()
-                .statusCode(is(204));
-    }
-
-    @Test
-    @Order(18)
     void deveRemoverUmUsuarioSemSucessoENaoEncontrado(){
-        String token = JWTGenerator.tokenGenerator("owner","123.456.789-00");
+
+        String token = UserUtils.tokenGenerator();
 
         given()
                 .header("Authorization",token)
@@ -342,28 +334,42 @@ class UserTest {
     }
 
     @Test
-    @Order(19)
+    @Order(18)
     void deveRemoverUmUsuarioSemSucessoESemPermissao(){
         String token = JWTGenerator.tokenGenerator("NoRole","123.456.789-00");
 
         given()
                 .header("Authorization",token)
         .when()
-                .delete("/user/1")
+                .delete("/user/2")
         .then()
                 .statusCode(is(403))
                 .body("msg",is("Access forbidden for this user."));
     }
 
     @Test
-    @Order(20)
+    @Order(19)
     void deveRemoverUmUsuarioSemSucessoESemAutorizacao(){
 
         given()
         .when()
-                .delete("/user/1")
+                .delete("/user/2")
         .then()
                 .statusCode(is(401))
                 .body("msg",is("User not logged in!"));
+    }
+
+    @Test
+    @Order(20)
+    void deveRemoverUmUsuarioComSucesso(){
+
+        String token = UserUtils.tokenGenerator();
+
+        given()
+                .header("Authorization",token)
+                .when()
+                .delete("/user/2")
+                .then()
+                .statusCode(is(204));
     }
 }
