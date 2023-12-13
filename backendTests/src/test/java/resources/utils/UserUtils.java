@@ -9,7 +9,8 @@ import static org.hamcrest.Matchers.notNullValue;
 
 public class UserUtils {
 
-    public static String tokenGenerator(){
+    public static String
+    tokenGenerator(){
        return "Bearer "+ given()
                 .contentType(ContentType.JSON)
                 .body("{\"cpf\":\"" + "123.456.789-01" + "\",\"password\":\"123456\"}")

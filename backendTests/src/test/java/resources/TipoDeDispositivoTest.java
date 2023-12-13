@@ -232,6 +232,6 @@ class TipoDeDispositivoTest {
                 .delete("/type/1000000000")
             .then()
                 .statusCode(404)
-                .body("msg",is("device types not found."));
+                .body("msg",is("Device types not found."));
     }
 }
