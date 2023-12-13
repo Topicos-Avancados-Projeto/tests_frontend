@@ -6,11 +6,8 @@
         "required": [
             "name",
             "description",
-            "_id",
-            "group",
-            "topics",
-            "type",
-            "attributes"
+            "attributes",
+            "_id"
         ],
         "properties": {
             "name": {
@@ -20,18 +17,6 @@
                 "type": "string"
             },
             "_id": {
-                "type": "string"
-            },
-            "group": {
-                "type": "string"
-            },
-            "topics": {
-                "type": "array",
-                "items": {
-                    "type": "string"
-                }
-            },
-            "type": {
                 "type": "string"
             },
             "attributes": {

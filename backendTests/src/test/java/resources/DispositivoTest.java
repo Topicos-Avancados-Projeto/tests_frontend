@@ -13,6 +13,7 @@ import java.util.List;
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class DispositivoTest {
@@ -43,7 +44,7 @@ class DispositivoTest {
                     .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("dispositivoJsonSchema.json"));
         }
 
-    @Test()
+    @Test
     @Order(2)
     void deveCriarUmDispositivoSemSucessoConflitoDeDados(){
 
@@ -62,7 +63,7 @@ class DispositivoTest {
                 .body("msg",is("ID  already exists!"));
     }
 
-    @Test()
+    @Test
     @Order(3)
     void deveCriarUmDispositivoSemSucessoComProblemaDeValidacao(){
 
@@ -81,7 +82,7 @@ class DispositivoTest {
                 .body("msg",is("Validation problem"));
     }
 
-    @Test()
+    @Test
     @Order(3)
     void deveCriarUmDispositivoSemSucessoSemAutorizacao(){
 
@@ -119,7 +120,7 @@ class DispositivoTest {
 
             List<Object> devices = response.getBody().jsonPath().getList("devices");
 
-            Assertions.assertTrue(devices.size()<=10);
+           assertTrue(devices.size()<=10);
         }
 
 
@@ -219,7 +220,7 @@ class DispositivoTest {
         .when()
             .patch("/device/1")
         .then()
-            .statusCode(204)
+            .statusCode(200)
             .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("dispositivoJsonSchema.json"));
     }
 
@@ -314,7 +315,7 @@ class DispositivoTest {
 
     @Test
     @Order(18)
-    void deveDeletarUmDispositivoSemSucessoSemAutorizacao() {
+    void deveDeletarUmDispositivoSemSucessoSemPermissao() {
         String token = UserUtils.tokenGenerator();
 
         given()

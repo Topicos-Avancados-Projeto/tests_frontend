@@ -5,32 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eec674b7-473c-4343-bb00-706aecd37d50" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../backendTests/.idea/backendTests.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/.idea/uiDesigner.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/resources/Broker.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/src/main/java/resources/Broker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/resources/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/src/main/java/resources/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/resources/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/src/main/java/resources/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/resources/BrokerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/src/test/java/resources/BrokerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/resources/LoginTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/src/test/java/resources/LoginTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/resources/UserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/src/test/java/resources/UserTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/resources/utils/BrokerUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/src/test/java/resources/utils/BrokerUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/resources/utils/JWTGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/src/test/java/resources/utils/JWTGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/resources/utils/UserUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/src/test/java/resources/utils/UserUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/.env" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/src/test/resources/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/brokerJsonSchema.json" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/src/test/resources/brokerJsonSchema.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/brokersJsonSchema.json" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/src/test/resources/brokersJsonSchema.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/loginJsonSchema.json" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/src/test/resources/loginJsonSchema.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/userJsonSchema.json" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/src/test/resources/userJsonSchema.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/usersJsonSchema.json" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/src/test/resources/usersJsonSchema.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backendTests/src/main/java/resources/TipoDeDispositivo.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/src/main/java/resources/TipoDeDispositivo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backendTests/src/test/java/resources/DispositivoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backendTests/src/test/java/resources/DispositivoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,27 +17,27 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2ZMuSWaTqc589zTiDrUdvgsObx8" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "dev",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -70,6 +47,8 @@
       <option name="presentableId" value="Default" />
       <updated>1702244273890</updated>
       <workItem from="1702244275039" duration="599000" />
+      <workItem from="1702420841118" duration="374000" />
+      <workItem from="1702421665148" duration="62000" />
     </task>
     <servers />
   </component>
