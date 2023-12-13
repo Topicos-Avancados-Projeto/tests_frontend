@@ -27,7 +27,7 @@ class TipoDeDispositivoTest {
     void deveRegistarUmNovoTipoDeDispositivoComSucesso(){
 
         String token = UserUtils.tokenGenerator();
-        String tipoDeDispositivo = TipoDeDispositivoUtils.criarPostTipoDeDispositivoComSucesso().toString();
+        String tipoDeDispositivo = TipoDeDispositivoUtils.criarPostTipoDeDispositivoComSucesso();
 
         given()
             .header("Authorization", token)
@@ -45,7 +45,7 @@ class TipoDeDispositivoTest {
     void deveRegistarUmNovoTipoDeDispositivoSemSucessoComProblemaDeValidacao(){
 
         String token = UserUtils.tokenGenerator();
-        String tipoDeDispositivo = TipoDeDispositivoUtils.criarPostTipoDeDispositivoVazio().toString();
+        String tipoDeDispositivo = TipoDeDispositivoUtils.criarPostTipoDeDispositivoVazio();
 
         given()
             .header("Authorization", token)
@@ -62,7 +62,7 @@ class TipoDeDispositivoTest {
     @Order(3)
     void deveRegistarUmNovoTipoDeDispositivoSemSucessoComProblemaDeAutorizacao(){
 
-        String tipoDeDispositivo = TipoDeDispositivoUtils.criarPostTipoDeDispositivoVazio().toString();
+        String tipoDeDispositivo = TipoDeDispositivoUtils.criarPostTipoDeDispositivoComSucesso();
 
         given()
             .contentType(ContentType.JSON)
@@ -71,14 +71,15 @@ class TipoDeDispositivoTest {
             .post("/type")
         .then()
             .statusCode(401)
-            .body("msg",is("user not logged in!"));
+            .body("msg",is("User not logged in!"));
     }
 
     @Test
     @Order(4)
     void deveRegistarUmNovoTipoDeDispositivoSemSucessoComProblemaDePermissao(){
         String token = JWTGenerator.tokenGenerator("NoRole","123.456.789-00");
-        String tipoDeDispositivo = TipoDeDispositivoUtils.criarPostTipoDeDispositivoVazio().toString();
+
+        String tipoDeDispositivo = TipoDeDispositivoUtils.criarPostTipoDeDispositivoComSucesso();
 
         given()
             .header("Authorization",token)
@@ -161,7 +162,7 @@ class TipoDeDispositivoTest {
                 .get("/type/100000000")
         .then()
                 .statusCode(is(404))
-                .body("msg",is("device types not found."));
+                .body("msg",is("Device types not found."));
 
 
     }
@@ -187,7 +188,6 @@ class TipoDeDispositivoTest {
 
     @Test
     @Order(10)
-
     void deveAtualizarUmTipoDeDispositivoSemSucessoNotFound(){
 
         String token = UserUtils.tokenGenerator();
@@ -201,7 +201,7 @@ class TipoDeDispositivoTest {
             .patch("/type/400000000")
         .then()
             .statusCode(404)
-            .body("msg",is("device types not found."));
+            .body("msg",is("Device types not found."));
     }
 
 

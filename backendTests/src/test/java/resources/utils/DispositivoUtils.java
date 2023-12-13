@@ -5,64 +5,47 @@ import com.google.gson.JsonObject;
 
 public class DispositivoUtils {
 
-    public static JsonObject criarPostDispositivo(){
-        JsonObject dispositivo = new JsonObject();
-
-        dispositivo.addProperty("name", "Geladeira");
-        dispositivo.addProperty("description", "A beautiful dispositivo");
-        dispositivo.addProperty("group", "Eletrodomestivo");
-        dispositivo.addProperty("topics", 1234);
-        dispositivo.addProperty("type", 1);
-        dispositivo.addProperty("attributes",criarAttributes().toString());
+    public static String criarPostDispositivo(){
 
 
-        return dispositivo;
+        return "{"
+                + "\"name\":\"Geladeira\","
+                + "\"description\":\"A beautiful dispositivo\","
+                + "\"group\":\"ce83d5b7-9c29-4e99-af33-38fe4f538c53\","
+                + "\"topics\":\"ce83d5b7-9c29-4e99-af33-38fe4f538c53\","
+                + "\"type\":\"ce83d5b7-9c29-4e99-af33-38fe4f538c53\","
+                + "\"attributes\":{"
+                + "\"key\":\"categoria\","
+                + "\"value\":\"eletrodomestico\""
+                + "}}";
     }
 
-    static JsonArray criarAttributes(){
-        JsonArray attributesArray = new JsonArray();
-        JsonObject attributeObject = new JsonObject();
 
-        JsonObject keyObject = new JsonObject();
+    public static String criarPostDispositivoComConflito(){
 
-        keyObject.addProperty("type", "string");
-        keyObject.addProperty("value", "Categoria");
-
-        JsonObject valueObject = new JsonObject();
-        valueObject.addProperty("type", "string");
-        valueObject.addProperty("value", "Cozinha");
-
-        attributeObject.addProperty("key", keyObject.toString());
-        attributeObject.addProperty("value", valueObject.toString());
-
-        attributesArray.add(attributeObject);
-        return attributesArray;
+        return "{"
+                + "\"name\":\"\","
+                + "\"description\":\"\","
+                + "\"group\":\"\","
+                + "\"topics\":\"ce83d5b7-9c29-4e99-af33-38fe4f538c53\","
+                + "\"type\":\"ce83d5b7-9c29-4e99-af33-38fe4f538c53\","
+                + "\"attributes\":{"
+                + "\"key\":\"categoria\","
+                + "\"value\":\"eletrodomestico\""
+                + "}}";
     }
-    public static JsonObject criarPostDispositivoComConflito(){
-        JsonObject dispositivo = new JsonObject();
+    public static String criarPostDispositivoAtualizado(){
 
-        dispositivo.addProperty("name", "Geladeira");
-        dispositivo.addProperty("description", "A beautiful dispositivo");
-        dispositivo.addProperty("group", "Eletrodomestivo");
-        dispositivo.addProperty("topics", 1234);
-        dispositivo.addProperty("type", 1);
-        dispositivo.addProperty("attributes",criarAttributes().toString());
-
-
-        return dispositivo;
-    }
-    public static JsonObject criarPostDispositivoAtualizado(){
-        JsonObject dispositivo = new JsonObject();
-
-        dispositivo.addProperty("name", "Geladeira");
-        dispositivo.addProperty("description", "Um dispositivo bonito");
-        dispositivo.addProperty("group", "Eletrodomestivo");
-        dispositivo.addProperty("topics", 1234);
-        dispositivo.addProperty("type", 1);
-        dispositivo.addProperty("attributes",criarAttributes().toString());
-
-
-        return dispositivo;
+        return "{"
+                + "\"name\":\"Frigorifico\","
+                + "\"description\":\"A beautiful dispositivo\","
+                + "\"group\":\"ce83d5b7-9c29-4e99-af33-38fe4f538c53\","
+                + "\"topics\":\"ce83d5b7-9c29-4e99-af33-38fe4f538c53\","
+                + "\"type\":\"ce83d5b7-9c29-4e99-af33-38fe4f538c53\","
+                + "\"attributes\":{"
+                + "\"key\":\"categoria\","
+                + "\"value\":\"eletrodomestico\""
+                + "}}";
     }
 
     public static JsonObject criarPostDispositivoComProblemaDeValidacao(){

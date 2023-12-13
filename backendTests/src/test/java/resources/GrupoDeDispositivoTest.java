@@ -197,9 +197,9 @@ class GrupoDeDispositivoTest {
         given()
                 .header("Authorization", token)
         .when()
-                .delete("/devices group/100000")
+                .delete("/devices group/1")
         .then()
-                .statusCode(404)
+                .statusCode(204)
                 .body("msg",is("devices group not found."));
 
     }

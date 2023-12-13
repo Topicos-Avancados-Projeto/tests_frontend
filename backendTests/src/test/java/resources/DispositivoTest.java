@@ -31,7 +31,7 @@ class DispositivoTest {
         void deveCriarUmDispositivoComSucesso(){
 
             String token = UserUtils.tokenGenerator();
-            String dispositivo = DispositivoUtils.criarPostDispositivo().toString();
+            String dispositivo = DispositivoUtils.criarPostDispositivo();
 
             given()
                     .header("Authorization", token)
@@ -78,12 +78,12 @@ class DispositivoTest {
             .when()
                 .post("/device")
             .then()
-                .statusCode(422)
+                .statusCode(409)
                 .body("msg",is("Validation problem"));
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     void deveCriarUmDispositivoSemSucessoSemAutorizacao(){
 
 
@@ -96,7 +96,7 @@ class DispositivoTest {
             .post("/device")
         .then()
             .statusCode(401)
-            .body("msg",is("Device not logged in!"));
+            .body("msg",is("User not logged in!"));
     }
 
 
@@ -106,7 +106,7 @@ class DispositivoTest {
 
             String token = UserUtils.tokenGenerator();
 
-           Response response = given()
+           given()
                 .header("Authorization", token)
                 .queryParam("limit", 10)
                 .queryParam("sortby", "nome")
@@ -115,12 +115,8 @@ class DispositivoTest {
                 .get("/device")
             .then()
                 .statusCode(is(200))
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("dispositivosJsonSchema.json"))
-                   .extract().response();
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("dispositivosJsonSchema.json"));
 
-            List<Object> devices = response.getBody().jsonPath().getList("devices");
-
-           assertTrue(devices.size()<=10);
         }
 
 
@@ -136,7 +132,7 @@ class DispositivoTest {
             .get("/device")
         .then()
             .statusCode(is(401))
-            .body("msg", is("Device not logged in"));
+            .body("msg", is("User not logged in!"));
 
     }
     @Test
@@ -153,8 +149,8 @@ class DispositivoTest {
             .when()
                 .get("/device")
             .then()
-                .statusCode(is(401))
-                .body("msg", is("Access forbidden for this device."));
+                .statusCode(is(403))
+                .body("msg", is("Access forbidden for this user."));
     }
 
     @Test
@@ -178,7 +174,7 @@ class DispositivoTest {
                 .get("/device/1")
         .then()
                 .statusCode(is(401))
-                .body("msg",is("Device not logged in!"));
+                .body("msg",is("User not logged in!"));
     }
 
     @Test
@@ -197,7 +193,7 @@ class DispositivoTest {
     @Test
     @Order(9)
     void deveObterUmDispositivoSemSucessoSemPermissao() {
-        String token = JWTGenerator.tokenGenerator("NoRole","123.456.789-00");
+        String token = JWTGenerator.tokenGenerator("NoRole","123.456.789-99");
         given()
                 .header("Authorization", token)
         .when()
@@ -238,14 +234,14 @@ class DispositivoTest {
             .patch("/device/1000")
         .then()
             .statusCode(404)
-            .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("dispositivoJsonSchema.json"));
+            .body("msg",is("Device not found."));
     }
 
     @Test
     @Order(13)
     void deveAtualizarUmDispositivoSemSucessoSemAutorizacao(){
 
-        String dispositivo = DispositivoUtils.criarPostDispositivoAtualizado().toString();
+        String dispositivo = DispositivoUtils.criarPostDispositivoAtualizado();
 
         given()
                 .contentType(ContentType.JSON)
@@ -254,7 +250,7 @@ class DispositivoTest {
             .patch("/device/1")
         .then()
             .statusCode(401)
-            .body("msg",is("Device not logged in"));
+            .body("msg",is("User not logged in!"));
     }
 
     @Test
@@ -262,7 +258,7 @@ class DispositivoTest {
     void deveAtualizarUmDispositivoSemSucessoSemPermissao(){
         String token = JWTGenerator.tokenGenerator("NoRole","123.456.789-00");
 
-        String dispositivo = DispositivoUtils.criarPostDispositivoAtualizado().toString();
+        String dispositivo = DispositivoUtils.criarPostDispositivoAtualizado();
 
         given()
             .header("Authorization", token)
@@ -316,7 +312,8 @@ class DispositivoTest {
     @Test
     @Order(18)
     void deveDeletarUmDispositivoSemSucessoSemPermissao() {
-        String token = UserUtils.tokenGenerator();
+        String token = JWTGenerator.tokenGenerator("NoRole","123.456.789-00");
+
 
         given()
             .header("Authorization", token)

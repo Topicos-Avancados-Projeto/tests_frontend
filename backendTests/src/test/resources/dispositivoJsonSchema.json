@@ -15,16 +15,13 @@
             "type": "string"
         },
         "topics": {
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
+            "type": "string"
         },
         "type": {
             "type": "string"
         },
         "attributes": {
-            "type": "array",
+            "type": "object",
             "items": {
                 "type": "object",
                 "properties": {
