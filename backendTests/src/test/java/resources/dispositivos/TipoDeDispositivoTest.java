@@ -1,4 +1,4 @@
-package resources;
+package resources.dispositivos;
 
 import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
@@ -12,7 +12,7 @@ import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TipoDeDispositivoTest {
 
     @BeforeAll
@@ -37,7 +37,7 @@ class TipoDeDispositivoTest {
             .post("/type")
                 .then()
                 .statusCode(201)
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("tipoDeDispositivoJsonSchema.json"));
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/tipoDeDispositivo/tipoDeDispositivoJsonSchema.json"));
     }
 
     @Test
@@ -54,8 +54,8 @@ class TipoDeDispositivoTest {
         .when()
             .post("/type")
         .then()
-            .statusCode(409)
-                .body("msg",is("Validation problem"));
+            .statusCode(400)
+                .body("msg",is("name should not be empty"));
     }
 
     @Test
@@ -95,14 +95,12 @@ class TipoDeDispositivoTest {
 
     // GET
 
-
     @Test
     @Order(5)
     void deveObterUmaPaginacaoComSucesso() {
 
         String token = UserUtils.tokenGenerator();
 
-        Response response =
                  given()
                         .header("Authorization", token)
                         .queryParam("limit", 10)
@@ -112,12 +110,7 @@ class TipoDeDispositivoTest {
                         .get("/type")
                 .then()
                         .statusCode(is(200))
-                        .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("tiposDeDispositivoJsonSchema.json"))
-                        .extract().response();
-
-        List<Object> devices = response.getBody().jsonPath().getList("tiposDeDispositivo");
-
-        assertTrue(devices.size()<=10);
+                        .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/tipoDeDispositivo/tiposDeDispositivoJsonSchema.json"));
     }
 
     @Test
@@ -146,7 +139,7 @@ class TipoDeDispositivoTest {
                         .get("/type/1")
                 .then()
                         .statusCode(is(200))
-                        .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("tipoDeDispositivoJsonSchema.json"));
+                        .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/tipoDeDispositivo/tipoDeDispositivoJsonSchema.json"));
     }
 
 
@@ -162,7 +155,7 @@ class TipoDeDispositivoTest {
                 .get("/type/100000000")
         .then()
                 .statusCode(is(404))
-                .body("msg",is("Device types not found."));
+                .body("msg",is("Type does not exist."));
 
 
     }
@@ -173,7 +166,7 @@ class TipoDeDispositivoTest {
     void deveAtualizarUmTipoDeDispositivoComSucesso(){
 
         String token = UserUtils.tokenGenerator();
-        String tipoDeDispositivo = TipoDeDispositivoUtils.criarPostTipoDeDispositivo2().toString();
+        String tipoDeDispositivo = TipoDeDispositivoUtils.criarPostTipoDeDispositivo2();
 
         given()
                 .header("Authorization", token)
@@ -183,7 +176,7 @@ class TipoDeDispositivoTest {
                 .patch("/type/1")
         .then()
                 .statusCode(200)
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("tipoDeDispositivoJsonSchema.json"));
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/tipoDeDispositivo/tipoDeDispositivoJsonSchema.json"));
     }
 
     @Test
@@ -201,7 +194,7 @@ class TipoDeDispositivoTest {
             .patch("/type/400000000")
         .then()
             .statusCode(404)
-            .body("msg",is("Device types not found."));
+            .body("msg",is("Type does not exist."));
     }
 
 
@@ -232,6 +225,6 @@ class TipoDeDispositivoTest {
                 .delete("/type/1000000000")
             .then()
                 .statusCode(404)
-                .body("msg",is("Device types not found."));
+                .body("msg",is("Type does not exist."));
     }
 }

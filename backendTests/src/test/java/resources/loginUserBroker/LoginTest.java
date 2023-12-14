@@ -1,18 +1,14 @@
-package resources;
+package resources.loginUserBroker;
 
-import com.google.gson.JsonObject;
 import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import resources.utils.JWTGenerator;
 import resources.utils.UserUtils;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.jupiter.api.Assertions.*;
 
 class LoginTest {
 
@@ -28,10 +24,10 @@ class LoginTest {
                 .contentType(ContentType.JSON)
                 .body("{\"cpf\":\"" + "123.456.789-01" + "\",\"password\":\"123456\"}")
         .when()
-                .post("/login")
+                .post("/schemas/login")
         .then()
                 .statusCode(is(201))
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("loginJsonSchema.json"))
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/login/loginJsonSchema.json"))
                 .header("Authorization", is(notNullValue())).extract().header("Authorization");
 
         System.out.println(token);
@@ -44,7 +40,7 @@ class LoginTest {
                 .contentType(ContentType.JSON)
                 .body("{\"cpf\":\"" + "123.456.789-00" + "\",\"password\":\"1234567\"}")
         .when()
-                .post("/login")
+                .post("/schemas/login")
         .then()
                 .statusCode(is(401))
                 .body("msg",is("Incorrect CPF or Password!"));
@@ -58,7 +54,7 @@ class LoginTest {
                 .contentType(ContentType.JSON)
                 .body("{\"cpf\":\"" + " "  + "\",\"password\":\" \"}") // ta passando quando é vazio ""
         .when()
-                .post("/login")
+                .post("/schemas/login")
         .then()
                 .statusCode(is(422))
                 .body("msg",is("Validation Problem."));
@@ -72,7 +68,7 @@ class LoginTest {
                 .contentType(ContentType.JSON)
                 .body("{\"cpf\":\"" + "02734" + "\",\"password\":\"1\"}")
         .when()
-            .post("/login")
+            .post("/schemas/login")
         .then()
             .statusCode(is(422))
             .body("msg",is("Validation Problem."));
@@ -82,7 +78,7 @@ class LoginTest {
     void devePegarAsInformacoesDoUsuarioComProblemaDeAutorizacao(){
         given()
         .when()
-            .get("/login")
+            .get("/schemas/login")
         .then()
             .statusCode(is(401))
                 .body("msg",is("User not logged in!"));
@@ -96,10 +92,10 @@ class LoginTest {
         given()
                 .header("Authorization",token)
         .when()
-            .get("/login")
+            .get("/schemas/login")
         .then()
             .statusCode(is(200))
-            .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("loginJsonSchema.json"));
+            .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/login/loginJsonSchema.json"));
     }
 
 }

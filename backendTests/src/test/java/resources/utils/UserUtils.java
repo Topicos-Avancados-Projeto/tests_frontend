@@ -18,7 +18,7 @@ public class UserUtils {
                 .post("/login")
             .then()
                 .statusCode(is(201))
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("loginJsonSchema.json"))
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/login/loginJsonSchema.json"))
                 .header("Authorization", is(notNullValue())).extract().header("Authorization");
 
     }

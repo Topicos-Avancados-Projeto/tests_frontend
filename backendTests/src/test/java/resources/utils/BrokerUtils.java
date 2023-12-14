@@ -61,7 +61,7 @@ public class BrokerUtils {
         .then()
                 .statusCode(is(201))
                 .header("Location",is(notNullValue()))
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("brokerJsonSchema.json"));
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/broker/brokerJsonSchema.json"));
 
     }
     public static JsonObject criarPostBrokerInvalido(){

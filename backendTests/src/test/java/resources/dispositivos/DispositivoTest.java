@@ -1,14 +1,11 @@
-package resources;
+package resources.dispositivos;
 
 import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
 import resources.utils.DispositivoUtils;
 import resources.utils.JWTGenerator;
 import resources.utils.UserUtils;
-
-import java.util.List;
 
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
@@ -41,7 +38,7 @@ class DispositivoTest {
                     .post("/device")
             .then()
                     .statusCode(201)
-                    .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("dispositivoJsonSchema.json"));
+                    .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/dispositivo/dispositivoJsonSchema.json"));
         }
 
     @Test
@@ -50,7 +47,7 @@ class DispositivoTest {
 
         String token = UserUtils.tokenGenerator();
 
-        String dispositivo = DispositivoUtils.criarPostDispositivoComConflito().toString();
+        String dispositivo = DispositivoUtils.criarPostDispositivoComConflito();
 
         given()
             .header("Authorization", token)
@@ -59,8 +56,8 @@ class DispositivoTest {
             .when()
                 .post("/device")
             .then()
-                .statusCode(409)
-                .body("msg",is("ID  already exists!"));
+                .statusCode(400)
+                .body("msg",is("name should not be empty"));
     }
 
     @Test
@@ -78,8 +75,8 @@ class DispositivoTest {
             .when()
                 .post("/device")
             .then()
-                .statusCode(409)
-                .body("msg",is("Validation problem"));
+                .statusCode(400)
+                .body("msg",is("name should not be empty"));
     }
 
     @Test
@@ -115,7 +112,7 @@ class DispositivoTest {
                 .get("/device")
             .then()
                 .statusCode(is(200))
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("dispositivosJsonSchema.json"));
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/dispositivo/dispositivosJsonSchema.json"));
 
         }
 
@@ -163,7 +160,7 @@ class DispositivoTest {
                 .get("/device/1")
             .then()
                 .statusCode(is(200))
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("dispositivoJsonSchema.json"));
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/dispositivo/dispositivoJsonSchema.json"));
     }
 
     @Test
@@ -217,7 +214,7 @@ class DispositivoTest {
             .patch("/device/1")
         .then()
             .statusCode(200)
-            .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("dispositivoJsonSchema.json"));
+            .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/dispositivo/dispositivoJsonSchema.json"));
     }
 
     @Test

@@ -1,38 +1,45 @@
-package resources;
+package resources.dispositivos;
 
 import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import resources.utils.GruposDeDispositivoUtils;
+import resources.utils.JWTGenerator;
 import resources.utils.TipoDeDispositivoUtils;
 import resources.utils.UserUtils;
 
 import java.util.List;
 
+import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class GrupoDeDispositivoTest {
+
+
+    @BeforeAll
+    static void setUp() {
+        baseURI = "http://localhost:3003";
+    }
 
     @Test
     @Order(1)
     void deveRegistarUmNovoGrupoDeDispositivoComSucesso() {
 
         String token = UserUtils.tokenGenerator();
-        String GrupoDeDispositivo = TipoDeDispositivoUtils.criarPostTipoDeDispositivoComSucesso().toString();
+        String GrupoDeDispositivo = GruposDeDispositivoUtils.criarPostGrupoDeDispositivoComSucesso();
 
         given()
-                .header("Authorization", token)
-                .contentType(ContentType.JSON)
-                .body(GrupoDeDispositivo)
-                .when()
-                .post("/device_group")
-                .then()
-                .statusCode(201)
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("gruposDeDispositivoJsonSchema.json"));
+            .header("Authorization", token)
+            .contentType(ContentType.JSON)
+            .body(GrupoDeDispositivo)
+        .when()
+            .post("/device_group")
+        .then()
+            .statusCode(201)
+            .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/grupoDeDispositivo/gruposDeDispositivoJsonSchema.json"));
     }
 
 
@@ -41,17 +48,17 @@ class GrupoDeDispositivoTest {
     void deveRegistrarUmNovoGrupoDeDispositivoSemSucessoComProblemaDeValidacao() {
 
         String token = UserUtils.tokenGenerator();
-        String grupoDeDispositivo = GruposDeDispositivoUtils.criarPostGrupoDeDispositivoComSucesso().toString();
+        String grupoDeDispositivo = GruposDeDispositivoUtils.criarPostTipoDeDispositivoVazio();
 
         given()
-                .header("Authorization", token)
-                .contentType(ContentType.JSON)
-                .body(grupoDeDispositivo)
-                .when()
-                .post("/device_group")
-                .then()
-                .statusCode(409)
-                .body("msg", is("Validation problem"));
+            .header("Authorization", token)
+            .contentType(ContentType.JSON)
+            .body(grupoDeDispositivo)
+        .when()
+            .post("/device_group")
+        .then()
+            .statusCode(400)
+            .body("msg", is("name should not be empty"));
     }
 
 
@@ -59,16 +66,16 @@ class GrupoDeDispositivoTest {
     @Order(3)
     void deveRegistrarUmNovoGrupoDeDispositivoSemSucessoComErroDeAutorizacao() {
 
-        String grupoDeDispositivo = GruposDeDispositivoUtils.criarPostGrupoDeDispositivoComSucesso().toString();
+        String grupoDeDispositivo = GruposDeDispositivoUtils.criarPostGrupoDeDispositivoComSucesso();
 
         given()
-                .contentType(ContentType.JSON)
-                .body(grupoDeDispositivo)
-                .when()
-                .post("/device_group")
-                .then()
-                .statusCode(401)
-                .body("msg", is("user not logged in!"));
+            .contentType(ContentType.JSON)
+            .body(grupoDeDispositivo)
+        .when()
+            .post("/device_group")
+        .then()
+            .statusCode(401)
+            .body("msg", is("User not logged in!"));
     }
 
 
@@ -77,15 +84,16 @@ class GrupoDeDispositivoTest {
     void deveRegistrarUmNovoGrupoDeDispositivoSemSucessoSemPermissao() {
 
         String grupoDeDispositivo = GruposDeDispositivoUtils.criarPostGrupoDeDispositivoComSucesso().toString();
-
+        String token = JWTGenerator.tokenGenerator("NoRole","123.456.789-00");
         given()
+                .header("Authorization", token)
                 .contentType(ContentType.JSON)
                 .body(grupoDeDispositivo)
-                .when()
+        .when()
                 .post("/device_group")
-                .then()
+        .then()
                 .statusCode(403)
-                .body("msg", is("Access forbidden for this  devices group."));
+                .body("msg", is("Access forbidden for this user."));
     }
 
 
@@ -97,16 +105,16 @@ class GrupoDeDispositivoTest {
 
         Response response =
                 given()
-                        .header("Authorization", token)
-                        .queryParam("limit", 10)
-                        .queryParam("sortby", "nome")
-                        .queryParam("order", "DESC")
-                        .when()
-                        .get("/device_group")
-                        .then()
-                        .statusCode(is(200))
-                        .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("gruposDeDispositivoJsonSchema.json"))
-                        .extract().response();
+                    .header("Authorization", token)
+                    .queryParam("limit", 10)
+                    .queryParam("sortby", "nome")
+                    .queryParam("order", "DESC")
+                .when()
+                    .get("/device_group")
+                .then()
+                    .statusCode(is(200))
+                    .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/grupoDeDispositivo/gruposDeDispositivoJsonSchema.json"))
+                    .extract().response();
 
         List<Object> groups = response.getBody().jsonPath().getList("gruposDeDispositivo");
 
@@ -136,20 +144,19 @@ class GrupoDeDispositivoTest {
         given()
             .header("Authorization", token)
         .when()
-            .get("/devices group/1")
+            .get("/device_group/1")
         .then()
             .statusCode(is(200))
-            .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("grupoDeDispositivoJsonSchema.json"));
+            .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/grupoDeDispositivo/grupoDeDispositivoJsonSchema.json"));
     }
 
     @Test
     @Order(8)
     void deveObterUmGrupoDeDispositivoSemSucessoESemAutorizacao() {
 
-
             given()
             .when()
-                .get("/devices group/1")
+                .get("/device_group/1")
             .then()
                 .statusCode(is(401));
 
@@ -167,10 +174,10 @@ class GrupoDeDispositivoTest {
             .contentType(ContentType.JSON)
             .body(grupoDeDispositivo)
         .when()
-            .patch("/devices group/1")
+            .patch("/device_group/1")
         .then()
             .statusCode(200)
-            .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("grupoDeDispositivoJsonSchema.json"));
+            .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/grupoDeDispositivo/grupoDeDispositivoJsonSchema.json"));
     }
 
     @Test
@@ -183,7 +190,7 @@ class GrupoDeDispositivoTest {
             .contentType(ContentType.JSON)
             .body(grupoDeDispositivo)
         .when()
-            .patch("/devices group/1")
+            .patch("/device_group/1")
         .then()
             .statusCode(401);
     }
@@ -193,14 +200,12 @@ class GrupoDeDispositivoTest {
     void deveDeletarUmGrupoDeDispositivoComSucesso(){
 
         String token = UserUtils.tokenGenerator();
-
         given()
                 .header("Authorization", token)
         .when()
-                .delete("/devices group/1")
+                .delete("/device_group/1")
         .then()
-                .statusCode(204)
-                .body("msg",is("devices group not found."));
+                .statusCode(204);
 
     }
 
@@ -210,10 +215,10 @@ class GrupoDeDispositivoTest {
 
         given()
         .when()
-            .delete("/devices group/100000")
+            .delete("/device_group/100000")
         .then()
-            .statusCode(404)
-            .body("msg",is("user not logged in!"));
+            .statusCode(401)
+            .body("msg",is("User not logged in!"));
 
     }
 

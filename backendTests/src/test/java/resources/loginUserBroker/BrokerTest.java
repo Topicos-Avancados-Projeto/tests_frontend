@@ -1,4 +1,4 @@
-package resources;
+package resources.loginUserBroker;
 
 import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
@@ -32,7 +32,7 @@ class BrokerTest {
         .then()
                 .statusCode(is(201))
                 .header("Location",is(notNullValue()))
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("brokerJsonSchema.json"));
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/broker/brokerJsonSchema.json"));
     }
 
     @Test
@@ -76,7 +76,7 @@ class BrokerTest {
                 .get("/broker_client")
         .then()
                 .statusCode(is(200))
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("brokersJsonSchema.json"));
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/broker/brokersJsonSchema.json"));
     }
 
     
@@ -89,7 +89,7 @@ class BrokerTest {
                 .get("/broker_client/1")
         .then()
                 .statusCode(is(200))
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("brokerJsonSchema.json"));
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/broker/brokerJsonSchema.json"));
     }
     
     // FUNÇÃO PATCH

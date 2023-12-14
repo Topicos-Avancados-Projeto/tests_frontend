@@ -7,55 +7,40 @@ public class GruposDeDispositivoUtils {
 
 
 
-    static JsonArray criarAttributes(){
-        JsonArray attributesArray = new JsonArray();
-        JsonObject attributeObject = new JsonObject();
+    public static String criarPostGrupoDeDispositivoComSucesso(){
 
-        JsonObject keyObject = new JsonObject();
-
-        keyObject.addProperty("type", "string");
-        keyObject.addProperty("value", "Categoria");
-
-        JsonObject valueObject = new JsonObject();
-        valueObject.addProperty("type", "string");
-        valueObject.addProperty("value", "Cozinha");
-
-        attributeObject.addProperty("key", keyObject.toString());
-        attributeObject.addProperty("value", valueObject.toString());
-
-        attributesArray.add(attributeObject);
-        return attributesArray;
-    }
-
-    public static JsonObject criarPostGrupoDeDispositivoComSucesso(){
-
-        JsonObject tipoDeDispositivo = new JsonObject();
-
-        tipoDeDispositivo.addProperty("name", "Eletrodomestico");
-        tipoDeDispositivo.addProperty("description", "para tarefas de casa");
-        tipoDeDispositivo.addProperty("attributes",criarAttributes().toString());
-
-        return tipoDeDispositivo;
+        return "{"
+                + "\"name\":\"Eletrodomestico\","
+                + "\"description\":\"para tarefas de casa\","
+                + "\"devices\":[\"1\",\"2\",\"3\"],"
+                + "\"attributes\":{"
+                + "\"key\":\"categoria\","
+                + "\"value\":\"eletrodomestico\""
+                + "}}";
     }
 
 
-    public static JsonObject criarPostGrupoDeDispositivoAtualizado(){
+    public static String criarPostGrupoDeDispositivoAtualizado(){
 
-        JsonObject tipoDeDispositivo = new JsonObject();
 
-        tipoDeDispositivo.addProperty("name", "Cama,mesa e banho");
-        tipoDeDispositivo.addProperty("description", "para tarefas de casa");
-        tipoDeDispositivo.addProperty("attributes",criarAttributes().toString());
 
-        return tipoDeDispositivo;
+        return "{"
+                + "\"name\":\"Eletrodomesticos\","
+                + "\"description\":\"para tarefas de casa e de empresas\","
+                + "\"devices\":[\"1\",\"2\",\"3\"],"
+                + "\"attributes\":{"
+                + "\"key\":\"categoria\","
+                + "\"value\":\"eletrodomestico\""
+                + "}}";
     }
-    public static JsonObject criarPostTipoDeDispositivoVazio(){
+    public static String criarPostTipoDeDispositivoVazio(){
 
-        JsonObject tipoDeDispositivo = new JsonObject();
-
-        tipoDeDispositivo.addProperty("name", "");
-        tipoDeDispositivo.addProperty("description", "");
-
-        return tipoDeDispositivo;
+        return "{"
+                + "\"name\":\"\","
+                + "\"description\":\"\","
+                + "\"attributes\":{"
+                + "\"key\":\"categoria\","
+                + "\"value\":\"eletrodomestico\""
+                + "}}";
     }
 }

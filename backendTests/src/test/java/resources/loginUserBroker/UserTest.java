@@ -1,8 +1,9 @@
-package resources;
+package resources.loginUserBroker;
 
 import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import org.junit.jupiter.api.*;
+import resources.User;
 import resources.utils.JWTGenerator;
 import resources.utils.UserUtils;
 
@@ -39,7 +40,7 @@ class UserTest {
                         "\",\"email\":\"" + usuario.getEmail() +
                         "\",\"password\":\"123456\",\"date_of_birth\":\"" + expectedDateOfBirth + "\"}")
         .when()
-                .post("/user")
+                .post("/schemas/user")
         .then()
                 .statusCode(is(201))
                 .body("id", is(notNullValue()))
@@ -66,7 +67,7 @@ class UserTest {
                         "\",\"email\":\"" + usuario.getEmail() +
                         "\",\"password\":\"123456\",\"date_of_birth\":\"" + expectedDateOfBirth + "\"}")
         .when()
-                .post("/user")
+                .post("/schemas/user")
         .then()
                 .statusCode(is(409))
                 .body("msg",is("CPF already exists!"));
@@ -84,7 +85,7 @@ class UserTest {
                         "\",\"email\":\"" + " "
                         + "\",\"password\":\"12345\",\"date_of_birth\":\"" + " " + "\"}")
         .when()
-                .post("/user")
+                .post("/schemas/user")
         .then()
                 .statusCode(is(422))
                 .body("msg", is("Validation problem"));
@@ -101,10 +102,10 @@ class UserTest {
         given()
                 .header("Authorization",token)
         .when()
-                .get("/user")
+                .get("/schemas/user")
         .then()
                 .statusCode(is(200))
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("usersJsonSchema.json"));
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/user/usersJsonSchema.json"));
     }
 
     @Test
@@ -113,7 +114,7 @@ class UserTest {
 
         given()
         .when()
-                .get("/user")
+                .get("/schemas/user")
         .then()
                 .statusCode(is(401))
                 .body("msg",is("User not logged in!"));
@@ -128,7 +129,7 @@ class UserTest {
         given()
             .header("Authorization",token)
         .when()
-            .get("/user")
+            .get("/schemas/user")
         .then()
             .statusCode(is(403))
             .body("msg",is("Access forbidden for this user."));
@@ -144,10 +145,10 @@ class UserTest {
         given()
                 .header("Authorization",token)
         .when()
-                .get("/user/2")
+                .get("/schemas/user/2")
         .then()
                 .statusCode(is(200))
-                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("userJsonSchema.json"));
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/user/userJsonSchema.json"));
     }
 
 
@@ -160,7 +161,7 @@ class UserTest {
         given()
                 .header("Authorization",token)
         .when()
-                .get("/user/1000")
+                .get("/schemas/user/1000")
         .then()
                 .statusCode(is(404))
                 .body("msg",is("User not found."));
@@ -172,7 +173,7 @@ class UserTest {
 
         given()
         .when()
-                .get("/user/2")
+                .get("/schemas/user/2")
         .then()
                 .statusCode(is(401))
                 .body("msg",is("User not logged in!"));
@@ -187,7 +188,7 @@ class UserTest {
         given()
                 .header("Authorization",token)
         .when()
-            .get("/user/2")
+            .get("/schemas/user/2")
         .then()
             .statusCode(is(403))
             .body("msg",is("Access forbidden for this user."));
@@ -215,7 +216,7 @@ class UserTest {
                         "\",\"email\":\"" + usuario.getEmail() +
                         "\",\"password\":\"1234567\",\"date_of_birth\":\"" + expectedDateOfBirth + "\"}")
         .when()
-                .patch("/user/2")
+                .patch("/schemas/user/2")
         .then()
                 .statusCode(is(200));
     }
@@ -238,7 +239,7 @@ class UserTest {
                         "\",\"email\":\"" + usuario.getEmail() +
                         "\",\"password\":\"12345\",\"date_of_birth\":\"" + expectedDateOfBirth + "\"}")
         .when()
-                .patch("/user/1000")
+                .patch("/schemas/user/1000")
         .then()
                 .statusCode(is(404))
                 .body("msg",is("User not found."));
@@ -259,7 +260,7 @@ class UserTest {
                         + "\",\"password\":\"12345\",\"date_of_birth\":\"" + "" + "\"}")
                 .pathParam("id", 1)
         .when()
-                .patch("/user/{id}")
+                .patch("/schemas/user/{id}")
         .then()
                 .statusCode(is(422))
                 .body("msg",is("Validation Problem."));
@@ -282,7 +283,7 @@ class UserTest {
                         "\",\"password\":\"12345\",\"date_of_birth\":\"" + expectedDateOfBirth + "\"}")
                 .pathParam("id", 1)
         .when()
-            .patch("/user/{id}")
+            .patch("/schemas/user/{id}")
         .then()
             .statusCode(is(401))
             .body("msg",is("User not logged in!"));
@@ -307,7 +308,7 @@ class UserTest {
                         "\",\"password\":\"123456\",\"date_of_birth\":\"" + expectedDateOfBirth + "\"}")
                 .pathParam("id", 1)
         .when()
-                .patch("/user/{id}")
+                .patch("/schemas/user/{id}")
         .then()
                 .statusCode(is(403))
                 .body("msg",is("Access forbidden for this user."));
@@ -327,7 +328,7 @@ class UserTest {
         given()
                 .header("Authorization",token)
         .when()
-                .delete("/user/10000")
+                .delete("/schemas/user/10000")
         .then()
             .statusCode(is(404))
             .body("msg",is("User not found."));
@@ -341,7 +342,7 @@ class UserTest {
         given()
                 .header("Authorization",token)
         .when()
-                .delete("/user/2")
+                .delete("/schemas/user/2")
         .then()
                 .statusCode(is(403))
                 .body("msg",is("Access forbidden for this user."));
@@ -353,7 +354,7 @@ class UserTest {
 
         given()
         .when()
-                .delete("/user/2")
+                .delete("/schemas/user/2")
         .then()
                 .statusCode(is(401))
                 .body("msg",is("User not logged in!"));
@@ -368,7 +369,7 @@ class UserTest {
         given()
                 .header("Authorization",token)
                 .when()
-                .delete("/user/2")
+                .delete("/schemas/user/2")
                 .then()
                 .statusCode(is(204));
     }
