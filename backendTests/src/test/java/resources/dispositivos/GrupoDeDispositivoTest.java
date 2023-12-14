@@ -39,7 +39,7 @@ class GrupoDeDispositivoTest {
             .post("/device_group")
         .then()
             .statusCode(201)
-            .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/grupoDeDispositivo/gruposDeDispositivoJsonSchema.json"));
+            .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/grupoDeDispositivo/grupoDeDispositivoJsonSchema.json"));
     }
 
 
